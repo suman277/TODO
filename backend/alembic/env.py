@@ -6,7 +6,7 @@ from sqlmodel import SQLModel
 from alembic import context
 from dotenv import load_dotenv
 import os
-
+import models
 load_dotenv()
 
 
@@ -24,6 +24,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
+DATABASE_URL = "mysql+pymysql://root:suman1234@localhost:3306/TODO"
 target_metadata = SQLModel.metadata
 config.set_main_option("sqlalchemy.url", DATABASE_URL)
 # other values from the config, defined by the needs of env.py,
