@@ -12,3 +12,7 @@ DATABASE_URL = (
     f"{os.getenv('DB_NAME')}"
 )
 engine = create_engine(DATABASE_URL, echo=True)
+
+def get_session():
+    with Session(engine) as session:
+        yield session
