@@ -5,5 +5,5 @@ class TodoSchema(SQLModel, table = False):
     id: Optional[int] = None
     todo : str
     description: str
-    user_id : int
+    user_id : Optional[int] = None
     is_completed : bool

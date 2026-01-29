@@ -62,6 +62,7 @@ def login_user(
             detail="Invalid username or password"
         )
     token = jwt_utils.create_access_token(username=existing_user.username)
+    print(session.__dict__)
     return {
         "access_token": token,
         "token_type": "bearer"
