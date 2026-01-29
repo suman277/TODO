@@ -8,3 +8,8 @@ class UserSchema(SQLModel, table = False):
     display_name: Optional[str] = None
     password : str
     email: Optional[str] = None
+
+
+class TokenResponse(SQLModel, table = False):
+    access_token: str
+    token_type: str = "bearer"

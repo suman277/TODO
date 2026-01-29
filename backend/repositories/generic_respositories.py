@@ -2,6 +2,9 @@ from typing import TypeVar, Generic, Type, Optional, Dict, Any
 from sqlmodel import SQLModel, Session, select
 from fastapi import HTTPException
 from starlette.status import HTTP_500_INTERNAL_SERVER_ERROR
+from sqlalchemy import asc, desc
+from sqlalchemy.sql.expression import nullslast
+from enums.enums import OrderByEnum
 T = TypeVar("T", bound=SQLModel)
 
 class CommonRepository(Generic[T]):
@@ -59,6 +62,29 @@ class CommonRepository(Generic[T]):
                 status_code = HTTP_500_INTERNAL_SERVER_ERROR,
                 detail = "An internal error occured"
             )
+    
+    def get_all_by_columns(self, session: Session, filters: Optional[Dict[str, Any]] = None, order_by: Optional[Dict[str, OrderByEnum]] = None,) -> list[T]:
+        stmt = select(self.model)
+
+        if filters:
+            for column_name, value in filters.items():
+                column = getattr(self.model, column_name)
+                stmt = stmt.where(column == value)
+        
+        if order_by is not None:
+                for column, direction in order_by.items():
+                    if direction == OrderByEnum.ASCENDING:
+                        stmt = stmt.order_by(
+                            nullslast(asc(getattr(self.model, column)))
+                        )
+                    elif direction == OrderByEnum.DESCENDING:
+                        stmt = stmt.order_by(
+                            nullslast(desc(getattr(self.model, column)))
+                        )
+
+        results = session.exec(stmt).all()
+
+        return results
         
 
         

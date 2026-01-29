@@ -6,6 +6,8 @@ from db.db import get_session
 from fastapi import HTTPException
 from starlette.status import HTTP_500_INTERNAL_SERVER_ERROR
 from sqlmodel import Session
+from helper.permission_helper import check_if_user_authenticated
+from utils.jwt_utils import verify_token
 
 
 todo_router = APIRouter(
@@ -17,8 +19,9 @@ todo_router = APIRouter(
 def create_todo(
     payload : TodoSchema,
     session: Session = Depends(get_session),
+    creds: dict = Depends(verify_token)
 ):
-
+    user_details = check_if_user_authenticated(session, creds)
     if payload.id:
         existing_todo= TodoRepository.get_by_id(session, payload.id)
         if not existing_todo:
@@ -31,7 +34,7 @@ def create_todo(
         todo = TodoRepository.create(session, Todo(
             todo = payload.todo,
             description = payload.description,
-            user_id = payload.user_id,
+            user_id = user_details.id,
             is_completed = False
         ))
         session.commit()
