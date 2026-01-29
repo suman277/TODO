@@ -22,7 +22,7 @@ def create_user(
     session: Session = Depends(get_session),
     creds: dict = Depends(verify_token)
 ):
-    user_details = check_if_user_authenticated(session, creds)
+    check_if_user_authenticated(session, creds)
     if payload.id:
         existing_user= UserRepo.get_by_id(session, payload.id)
         if not existing_user:
