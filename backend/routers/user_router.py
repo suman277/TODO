@@ -1,5 +1,5 @@
 from models.user_models import User
-from schemas.user_schemas import UserSchema, TokenResponse
+from schemas.user_schemas import UserSchema, TokenResponse, UserLoginSchema
 from repositories.user_repositories import UserRepo
 from fastapi import APIRouter, Depends, HTTPException
 from db.db import get_session
@@ -45,17 +45,16 @@ def create_user(
 
 @user_router.post("/login", response_model = TokenResponse)
 def login_user(
-    username: str,
-    password: str,
+    payload : UserLoginSchema,
     session: Session = Depends(get_session),
 ):
-    existing_user = UserRepo.get_by_column(session, filters={"username": username})
+    existing_user = UserRepo.get_by_column(session, filters={"username": payload.username})
     if not existing_user:
         raise HTTPException(status_code= HTTP_500_INTERNAL_SERVER_ERROR, 
         detail = "Invalid Username" )
     
     if not bcrypt.checkpw(
-        password.encode("utf-8"),
+        payload.password.encode("utf-8"),
         existing_user.password.encode("utf-8")
     ):
         raise HTTPException(

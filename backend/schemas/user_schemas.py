@@ -13,3 +13,7 @@ class UserSchema(SQLModel, table = False):
 class TokenResponse(SQLModel, table = False):
     access_token: str
     token_type: str = "bearer"
+
+class UserLoginSchema(SQLModel, table = False):
+    username: str
+    password : str
