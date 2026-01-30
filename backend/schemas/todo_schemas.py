@@ -7,3 +7,6 @@ class TodoSchema(SQLModel, table = False):
     description: str
     user_id : Optional[int] = None
     is_completed : bool
+
+class TodoRegisterSchema(SQLModel, table = False):
+    data : list[TodoSchema] = None
