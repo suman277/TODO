@@ -12,7 +12,7 @@ class UserSchema(SQLModel, table = False):
 
 class TokenResponse(SQLModel, table = False):
     access_token: str
-    token_type: str = "bearer"
+    token_type: str = "Bearer"
 
 class UserLoginSchema(SQLModel, table = False):
     username: str

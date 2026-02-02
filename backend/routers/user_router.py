@@ -65,5 +65,5 @@ def login_user(
     print(session.__dict__)
     return {
         "access_token": token,
-        "token_type": "bearer"
+        "token_type": "Bearer"
     }

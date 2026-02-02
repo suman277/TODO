@@ -1,0 +1,4 @@
+from models.hoc_models import HistoryOfChanges
+from repositories.generic_respositories import CommonRepository
+
+HistoryOfChangesRepo = CommonRepository(HistoryOfChanges)

@@ -2,8 +2,10 @@ from typing import TypeVar, Generic, Type, Optional, Dict, Any
 from sqlmodel import SQLModel, Session, select
 from fastapi import HTTPException
 from starlette.status import HTTP_500_INTERNAL_SERVER_ERROR
-from sqlalchemy import asc, desc
+from sqlalchemy import asc, desc, or_
 from sqlalchemy.sql.expression import nullslast
+from models.hoc_models import HistoryOfChanges
+
 from enums.enums import OrderByEnum
 T = TypeVar("T", bound=SQLModel)
 
@@ -14,6 +16,7 @@ class CommonRepository(Generic[T]):
     def create(self, session: Session, instance: T) -> T:
         try:
             session.add(instance)
+            print(session.__dict__)
             return instance
         except Exception as e:
             raise HTTPException(status_code = HTTP_500_INTERNAL_SERVER_ERROR,
@@ -37,6 +40,33 @@ class CommonRepository(Generic[T]):
 
         return session.exec(stmt).first()
     
+    def delete(self, session, instance : T) -> Optional[T]:
+        from repositories.hoc_repository import HistoryOfChangesRepo
+        try:
+            user_id, display_name= session.info["user_metadata"]
+            history_payload = {
+            "record": instance.id,
+            "table_name": instance.__tablename__,
+            "changes_json": {
+                "todo": instance.todo,
+                "description": instance.description,
+                "is_completed": instance.is_completed,
+                "user_id": instance.user_id,
+            },
+            "operation" : "DELETE",
+            "user_id" : user_id,
+            "display_name" : display_name
+        }
+            print(session.__dict__)
+            session.delete(instance)
+            print(session.__dict__)
+            HistoryOfChangesRepo.create(session, 
+                                        HistoryOfChanges(
+                                            **history_payload
+                                        ))
+        except Exception as e:
+            raise HTTPException(status_code = HTTP_500_INTERNAL_SERVER_ERROR, detail = "An internal Error Occured")
+    
     def update(self, session:Session, instance:T, filters:Optional[dict]= None)->Optional[T]:
         try:
             if filters is not None:
@@ -48,13 +78,13 @@ class CommonRepository(Generic[T]):
                 return None
             
             instance_dump = instance.model_dump(exclude_unset= True)
-
+            print(session.__dict__)
             for key, value in instance_dump.items():
                 if hasattr(existing_instance, key):
                     setattr(existing_instance, key, value)
             
             merged_instance = session.merge(existing_instance)
-
+            print(session.__dict__)
             return merged_instance
         
         except Exception as e:
@@ -67,9 +97,20 @@ class CommonRepository(Generic[T]):
         stmt = select(self.model)
 
         if filters:
-            for column_name, value in filters.items():
-                column = getattr(self.model, column_name)
-                stmt = stmt.where(column == value)
+            for name, value in filters.items():
+                if name == "ILIKE":
+                    ilike_conditions = []
+                    for key, value in value.items():
+                        column_name = getattr(self.model, key)
+                        if column_name:
+                            ilike_conditions.append(
+                                column_name.ilike(f"%{value}%")
+                            )
+                    if ilike_conditions:
+                        stmt = stmt.where(or_(*ilike_conditions))
+                else :
+                    column = getattr(self.model, name)
+                    stmt = stmt.where(column == value)
         
         if order_by is not None:
                 for column, direction in order_by.items():
