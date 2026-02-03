@@ -1,0 +1,33 @@
+
+
+.body{
+    width: 100%;
+    display: flex;
+    gap:0.8rem;
+    padding:0.5rem;    
+}
+
+.design-part{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:10px;
+}
+
+.circle{
+    border: black   ;
+    background-color: rebeccapurple;
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+}
+
+.straight{
+    height: 50px;
+    width:2px;
+    background-color: grey; 
+}
+
+.text{
+    font-size: small;
+}

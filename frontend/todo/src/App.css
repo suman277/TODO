@@ -1,7 +1,6 @@
 .todo-header {
   display: flex;
   justify-content: center;
-  margin-top: 4rem;
 }
 
 .todo {
@@ -52,10 +51,39 @@
   background-color: red;
 }
 
-.add-todo {
+.text {
+  background: none;
+  border: none;;
 }
 
 
 .todo-main {
   min-height: 100vh;
+}
+
+.logout,
+.logs {
+  background-color: green;
+  border: none;
+  padding-block: 0.5rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.logout:hover {
+  background-color: red;
+}
+
+.todo-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* vertical alignment */
+}
+
+.nav-header,
+.nav-button {
+  display: flex;
+  align-self: auto;
+  gap: 1rem;
 }

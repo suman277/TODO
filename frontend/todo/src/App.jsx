@@ -30,6 +30,10 @@ function App() {
     setSearch(e.target.value);
   }
   const navigator = useNavigate()
+  const handleLogout = () => {
+    localStorage.clear()
+    navigator("/login")
+  }
   const token = localStorage.getItem("token");
   const fetchTodos = () => {
     const url = new URL("http://localhost:8000/todo/todos");
@@ -82,6 +86,11 @@ function App() {
       })
   }
 
+  const handleRedirect = () => {
+    console.log("hogya")
+    navigator("/logs")
+  }
+
   const fetchTodobyId = (id) => {
     fetch("http://localhost:8000/todo/todos/" + id, {
       method: "GET",
@@ -115,6 +124,13 @@ function App() {
   return (
     <>
       <div className='todo-main'>
+        <div className='todo-navbar'>
+          <div className='nav-header'>Todo Management</div>
+          <div className='nav-button'>
+            <button className='logs' onClick={handleRedirect}>Logs</button>
+            <button className='logout' onClick={handleLogout}>Logout</button>
+          </div>
+        </div>
         <div className='todo-header'>
           <div className='todo'>Todo</div>
         </div>
@@ -130,7 +146,7 @@ function App() {
         <div className='add-todo'>
           <button className='text' onClick={handleCreate}>+</button>
         </div>
-      </div>
+      </div >
     </>
   )
 }
