@@ -1,5 +1,5 @@
 from models.user_models import User
-from schemas.user_schemas import UserSchema, TokenResponse, UserLoginSchema, LogRequestSchema, LogSchema
+from schemas.user_schemas import UserSchema, TokenResponse, UserLoginSchema, LogRequestSchema, LogSchema, Info
 from repositories.user_repositories import UserRepo
 from fastapi import APIRouter, Depends, HTTPException
 from db.db import get_session
@@ -12,6 +12,7 @@ from datetime import datetime
 from utils.jwt_utils import jwt_utils, verify_token
 from helper.permission_helper import check_if_user_authenticated
 from repositories.hoc_repository import HistoryOfChangesRepo
+from utils.common_utils import fix_audit_log
 
 user_router = APIRouter(
     prefix = "/user",
@@ -69,29 +70,35 @@ def login_user(
         "token_type": "Bearer"
     }
 
-@user_router.get("/users/log", response_model = LogRequestSchema)
+@user_router.get("/log/{id}", response_model = LogRequestSchema)
 def create_user(
+    id:int,
     session: Session = Depends(get_session),
     creds: dict = Depends(verify_token)
 ):
     query_obj = {}
     user_details=check_if_user_authenticated(session, creds)
-    logs = []
     query_obj["user_id"]: user_details.id
+    if not (id == user_details.id):
+            raise HTTPException(status_code = HTTP_500_INTERNAL_SERVER_ERROR, detail = "No logs are there")
     existing_logs= HistoryOfChangesRepo.get_all_by_columns(session, query_obj)
     if not existing_logs:
         raise HTTPException(status_code= HTTP_500_INTERNAL_SERVER_ERROR, 
         detail = "No logs are there" )
-    
-    for log in existing_logs:
-        logs.append(
-            LogSchema(
-                record = log.record,
-                changes_json = log.changes_json,
-                operation = log.operation,
-                user_id = log.user_id,
-                display_name = log.display_name
-            )
-        )
-    return LogRequestSchema(logs=logs)
+    # audit_logs = existing_logs.model_dump 
+    logs=fix_audit_log(existing_logs)
+    return LogRequestSchema(logs = logs)
+
+
+@user_router.get("/info", response_model = Info)
+def create_user(
+    session: Session = Depends(get_session),
+    creds: dict = Depends(verify_token)
+):
+    user_details=check_if_user_authenticated(session, creds)
+    return Info(
+        user_id = user_details.id,
+        name = user_details.username
+    )
+
         

@@ -179,11 +179,13 @@ class CommonRepository(Generic[T]):
 
             # 5. Build changes ONLY if something changed
             changes = {}
+            changes["todo"] = existing_instance.todo
             for key in before:
                 if before[key] != after[key]:
                     changes[key] = {
                         "before": before[key],
                         "after": after[key],
+                        "name": existing_instance.todo
                     }
 
             if not changes:

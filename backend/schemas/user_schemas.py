@@ -19,11 +19,15 @@ class UserLoginSchema(SQLModel, table = False):
     password : str
 
 class LogSchema(SQLModel, table = False):
-    record : int
-    changes_json : Optional[dict] = None
-    operation: str
+    id:int
+    changes_json : str
     user_id : int
     display_name : str
 
 class LogRequestSchema(SQLModel, table = False):
     logs : List[LogSchema]
+
+
+class Info(SQLModel, table = False):
+    user_id : int
+    name : str
