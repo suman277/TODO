@@ -185,7 +185,6 @@ class CommonRepository(Generic[T]):
                     changes[key] = {
                         "before": before[key],
                         "after": after[key],
-                        "name": existing_instance.todo
                     }
 
             if not changes:
