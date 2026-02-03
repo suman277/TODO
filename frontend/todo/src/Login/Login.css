@@ -1,0 +1,66 @@
+.modal {
+    height: 20rem;
+    width: 25rem;
+    background-color: white;
+    border-radius: 1rem;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.login-header {
+    color: black;
+    display: flex;
+    justify-content: center;
+}
+
+.login-form {
+    color: black;
+    height: 10rem;
+    gap: 2rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+.login-input {
+    width: 12rem;
+    background-color: white;
+    border-radius: 0.3rem;
+    color: black;
+}
+
+.username {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.password {
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: column;
+}
+
+.buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.login-button {
+    width: 4rem;
+    background-color: green;
+    border-radius: 0.3rem;
+    border: none;
+    height: 2rem;
+}
+
+.signup-button {
+    width: 4rem;
+    background-color: green;
+    border-radius: 0.3rem;
+    border: none;
+}

@@ -1,0 +1,23 @@
+.todo-body{
+    display: flex;
+    justify-content: space-around;
+}
+
+.todo-item{
+    width: 25rem;
+    background-color: rgb(225, 141, 38);
+    border-radius: 10px;
+    padding-block: 1rem;
+}
+
+.todo-texts{
+    width: 12rem;
+}
+
+.todo-desc{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-block: 1rem;
+    padding: 2rem;
+}
