@@ -1,5 +1,5 @@
 from sqlmodel import SQLModel, Field
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 
 class UserSchema(SQLModel, table = False):
@@ -17,3 +17,13 @@ class TokenResponse(SQLModel, table = False):
 class UserLoginSchema(SQLModel, table = False):
     username: str
     password : str
+
+class LogSchema(SQLModel, table = False):
+    record : int
+    changes_json : Optional[dict] = None
+    operation: str
+    user_id : int
+    display_name : str
+
+class LogRequestSchema(SQLModel, table = False):
+    logs : List[LogSchema]

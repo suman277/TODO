@@ -62,6 +62,7 @@ def get_all_todos(
         register_data.append(todo)
     return TodoRegisterSchema(data=register_data)
 
+
 @todo_router.delete("/todos/{id}")
 def delete_todo(
     id :int,
@@ -87,4 +88,3 @@ def get_todo_by_id(
     if not todo:
         raise HTTPException(status_code = HTTP_500_INTERNAL_SERVER_ERROR, detail = "No Todo Found")
     return todo
-    

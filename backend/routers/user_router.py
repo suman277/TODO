@@ -1,5 +1,5 @@
 from models.user_models import User
-from schemas.user_schemas import UserSchema, TokenResponse, UserLoginSchema
+from schemas.user_schemas import UserSchema, TokenResponse, UserLoginSchema, LogRequestSchema, LogSchema
 from repositories.user_repositories import UserRepo
 from fastapi import APIRouter, Depends, HTTPException
 from db.db import get_session
@@ -11,6 +11,7 @@ from utils.common_utils import genearte_password_hash
 from datetime import datetime
 from utils.jwt_utils import jwt_utils, verify_token
 from helper.permission_helper import check_if_user_authenticated
+from repositories.hoc_repository import HistoryOfChangesRepo
 
 user_router = APIRouter(
     prefix = "/user",
@@ -67,3 +68,30 @@ def login_user(
         "access_token": token,
         "token_type": "Bearer"
     }
+
+@user_router.get("/users/log", response_model = LogRequestSchema)
+def create_user(
+    session: Session = Depends(get_session),
+    creds: dict = Depends(verify_token)
+):
+    query_obj = {}
+    user_details=check_if_user_authenticated(session, creds)
+    logs = []
+    query_obj["user_id"]: user_details.id
+    existing_logs= HistoryOfChangesRepo.get_all_by_columns(session, query_obj)
+    if not existing_logs:
+        raise HTTPException(status_code= HTTP_500_INTERNAL_SERVER_ERROR, 
+        detail = "No logs are there" )
+    
+    for log in existing_logs:
+        logs.append(
+            LogSchema(
+                record = log.record,
+                changes_json = log.changes_json,
+                operation = log.operation,
+                user_id = log.user_id,
+                display_name = log.display_name
+            )
+        )
+    return LogRequestSchema(logs=logs)
+        
