@@ -6,7 +6,7 @@
       "type": "python",
       "request": "launch",
       "module": "uvicorn",
-      "args": ["main:app", "--reload"],
+      "args": ["main:app", "--reload", "--port", "8000"],
       "python": "/Users/sumankumarsahu/Desktop/TODO/backend/venv/bin/python",
       "cwd": "/Users/sumankumarsahu/Desktop/TODO/backend",
       "justMyCode": false
