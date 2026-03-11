@@ -37,12 +37,14 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    align-items: center;
 }
 
 .password {
     display: flex;
     gap: 0.5rem;
     flex-direction: column;
+    align-items: center;
 }
 
 .buttons {

@@ -37,7 +37,7 @@ const ActivityLogs = () => {
     }
   }, [userId])
 
-  const handelRedirect = () =>{
+  const handelRedirect = () => {
     navigate(-1);
   }
 
@@ -49,13 +49,13 @@ const ActivityLogs = () => {
           <button onClick={handelRedirect}>&lt;--</button>
         </div>
         <div className='main'>
-        <div className='page-title'>Audit Logs</div>
-        <div>
-          {datas &&
-            datas.map((item, index) => {
-              return <ActivityList key={item.id} log={item} isLast={index === datas.length - 1} />
-            })}
-        </div>
+          <div className='page-title'>Audit Logs</div>
+          <div>
+            {datas &&
+              datas.map((item, index) => {
+                return <ActivityList key={item.id} log={item} isLast={index === datas.length - 1} />
+              })}
+          </div>
         </div>
       </div>
     </>

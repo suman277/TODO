@@ -1,0 +1,118 @@
+html,
+body,
+#root {
+    height: 100%;
+    margin: 0;
+    color: black;
+}
+
+.navbar {
+    height: 4rem;
+    background-color: white;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.body-wrapper {
+    flex: 1;
+    background-color: white;
+    margin: 2rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-height: 70%;
+    overflow-y: scroll;
+}
+
+.input-wrapper {
+    height: 5rem;
+    background-color: white;
+}
+
+.full-body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+}
+
+.bot-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.return {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.back-button {
+    height: 2rem;
+    width: 4rem;
+}
+
+.session-button {
+    margin-left: auto;
+}
+
+.session-btn {
+    width: 6rem;
+    height: 2rem;
+}
+
+.message {
+    background-color: white;
+    width: 90%;
+    border-radius: 20px;
+    padding-left: 2rem;
+    height: 2.5rem;
+    color: black;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    gap: 2rem;
+}
+
+.btn-send {
+    height: 2.5rem;
+    width: 4rem;
+    border-radius: 20px;
+    border: none;
+}
+
+.msgRow {
+    display: flex;
+    width: 100%;
+    margin: 8px 0;
+}
+
+.right {
+    justify-content: flex-end;
+}
+
+.left {
+    justify-content: flex-start;
+}
+
+.bubble {
+    padding: 1.3rem;
+    border-radius: 2rem;
+    width: fit-content;
+    /* bubble shrink */
+    max-width: 60%;
+    word-break: break-word;
+    background: lightgray;
+}
+
+.right .bubble {
+    background: antiquewhite;
+}

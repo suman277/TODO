@@ -2,7 +2,8 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import Login from "../Login/Login";
 import App from "../App";
 import ActivityLogs from "../activity-logs/ActivityLogs";
-
+import Signup from "../Login/Signup"
+import Agent from "../agentic-ai/Agent";
 const IsProtected = ({ children }) => {
   if (!localStorage.getItem("token")) {
     return <Navigate to="/" replace />
@@ -15,7 +16,7 @@ export const router = createBrowserRouter([
     path: "/", element: <Navigate to="/login" replace />
   },
   {
-    path: "/login",           // ← add this
+    path: "/login",
     element: <Login />
   },
   {
@@ -34,7 +35,14 @@ export const router = createBrowserRouter([
       </IsProtected>
     )
   },
-  // Optional: catch-all for 404
+  {
+    path: "/signup",
+    element: <Signup />
+  },
+  {
+    path: "/agent",
+    element: <Agent/>
+  },
   {
     path: "*",
     element: <div>404 - Page not found</div>   // or your custom NotFound component

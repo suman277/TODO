@@ -91,6 +91,10 @@ function App() {
     navigator("/logs")
   }
 
+  const handleAgent = () =>{
+    navigator("/agent")
+  }
+
   const fetchTodobyId = (id) => {
     fetch("http://localhost:8000/todo/todos/" + id, {
       method: "GET",
@@ -129,6 +133,7 @@ function App() {
           <div className='nav-button'>
             <button className='logs' onClick={handleRedirect}>Logs</button>
             <button className='logout' onClick={handleLogout}>Logout</button>
+            <button className='agent' onClick={handleAgent}>Agent</button>
           </div>
         </div>
         <div className='todo-header'>

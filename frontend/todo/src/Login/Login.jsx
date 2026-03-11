@@ -8,6 +8,10 @@ export const Login = () => {
         username: "",
         password: "",
     });
+    const navigate = useNavigate();
+    const handleSignup= ()=>{
+        navigate("/signup")
+    }
 
 
     const handleChange = (e) => {
@@ -18,7 +22,6 @@ export const Login = () => {
             [name]: value
         }))
     }
-    const navigate = useNavigate();
     // const handleSubmit = (e) => {
     //     e.preventDefault();
     //         fetch("http://localhost:8000/user/login", {
@@ -126,7 +129,7 @@ export const Login = () => {
                         </div>
                         <div className="buttons">
                             <button type="submit" className="login-button" onClick={handleSubmit}>Login</button>
-                            <button type="submit" className="signup-button">Sign Up</button>
+                            <button type="submit" className="signup-button" onClick={handleSignup}>Sign Up</button>
                         </div>
                     </form>
                 </div>
