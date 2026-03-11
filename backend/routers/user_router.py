@@ -34,9 +34,15 @@ def create_user(
         session.commit()
         return updated
     else:
+        existing_user = UserRepo.get_by_column(session, payload.username)
+        if existing_user:
+            raise HTTPException(
+                status_code = HTTP_500_INTERNAL_SERVER_ERROR,
+                deatils = "Username already exists"
+            )
         user = UserRepo.create(session, User(
             username = payload.username,
-            display_name = payload.display_name,
+            display_name = payload.username,
             password = genearte_password_hash(payload.password),
             email = payload.email,
             created_at=datetime.utcnow(),
@@ -91,7 +97,7 @@ def create_user(
 
 
 @user_router.get("/info", response_model = Info)
-def create_user(
+def get_user(
     session: Session = Depends(get_session),
     creds: dict = Depends(verify_token)
 ):
